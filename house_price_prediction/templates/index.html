@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction - RealEstate Enterprise</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #181818; /* Dark background */
+            margin: 0;
+            padding: 20px;
+            color: #ffffff; /* White text for better contrast */
+            overflow-y: auto; /* Enable vertical scrolling */
+            background-image: url('https://source.unsplash.com/1600x900/?house'); /* Subtle background image */
+            background-size: cover; /* Cover the entire background */
+            background-position: center; /* Center the background image */
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in;
+        }
+        h1 {
+            color: #ff6347; /* Tomato color */
+            animation: fadeIn 2s ease-in;
+        }
+        h2 {
+            color: #4682b4; /* Steel Blue */
+            animation: fadeIn 2s ease-in 0.5s; /* Slight delay for animation */
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(44, 44, 44, 0.9); /* Darker background for form with transparency */
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+            animation: slideIn 0.5s ease-out; /* Animation for form */
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #ffffff; /* White text for labels */
+        }
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #444; /* Border color */
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #333; /* Dark background for inputs */
+            color: #ffffff; /* White text for inputs */
+            transition: border-color 0.3s, transform 0.3s; /* Added transition for transform */
+        }
+        input[type="number"]:hover,
+        input[type="text"]:hover {
+            border-color: #ff6347; /* Change border color on hover */
+            transform: translateY(-3px); /* Move the input field up slightly */
+        }
+        input[type="number"]:focus,
+        input[type="text"]:focus {
+            border-color: #ff6347; /* Change border color on focus */
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff6347; /* Tomato color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s; /* Added transition */
+            animation: bounce 0.5s ease-in-out infinite alternate; /* Button animation */
+        }
+        button:hover {
+            background-color: #e65c00; /* Darker tomato color on hover */
+            transform: scale(1.05); /* Scale up button on hover */
+        }
+        #predictionResult {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 20px; /* Larger font for result */
+            color: #ffffff;
+            animation: fadeIn 1s ease-in; /* Result display animation */
+            border: 2px solid #ff6347; /* Border around the result */
+            border-radius: 6px; /* Rounded corners for result box */
+            padding: 10px;
+            background-color: rgba(255, 99, 71, 0.2); /* Light tomato background */
+        }
+
+        /* Keyframes for animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+
+        /* Add some padding to the footer */
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #ffffff; /* Grey for footer */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>RealEstate Enterprise</h1>
+        <h2>House Price Prediction</h2>
+    </header>
+    <form id="predictionForm">
+        <label for="area">Area (in sq ft):</label>
+        <input type="number" id="area" name="area" required>
+
+        <label for="bedrooms">Bedrooms:</label>
+        <input type="number" id="bedrooms" name="bedrooms" required>
+
+        <label for="bathrooms">Bathrooms:</label>
+        <input type="number" id="bathrooms" name="bathrooms" required>
+
+        <label for="stories">Stories:</label>
+        <input type="number" id="stories" name="stories" required>
+
+        <label for="mainroad">Main Road (yes/no):</label>
+        <input type="text" id="mainroad" name="mainroad" required>
+
+        <label for="guestroom">Guest Room (yes/no):</label>
+        <input type="text" id="guestroom" name="guestroom" required>
+
+        <label for="basement">Basement (yes/no):</label>
+        <input type="text" id="basement" name="basement" required>
+
+        <label for="hotwaterheating">Hot Water Heating (yes/no):</label>
+        <input type="text" id="hotwaterheating" name="hotwaterheating" required>
+
+        <label for="airconditioning">Air Conditioning (yes/no):</label>
+        <input type="text" id="airconditioning" name="airconditioning" required>
+
+        <label for="parking">Parking (number of spots):</label>
+        <input type="number" id="parking" name="parking" required>
+
+        <label for="prefarea">Preferred Area (Urban/Rural):</label>
+        <input type="text" id="prefarea" name="prefarea" required>
+
+        <label for="furnishingstatus">Furnishing Status (furnished, semi-furnished, unfurnished):</label>
+        <input type="text" id="furnishingstatus" name="furnishingstatus" required>
+
+        <button type="submit">Predict Price</button>
+    </form>
+
+    <div id="predictionResult"></div>
+
+    <footer>
+        <p>&copy; 2024 RealEstate Enterprise. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                area: parseFloat(document.getElementById('area').value),
+                bedrooms: parseInt(document.getElementById('bedrooms').value),
+                bathrooms: parseInt(document.getElementById('bathrooms').value),
+                stories: parseInt(document.getElementById('stories').value),
+                mainroad: document.getElementById('mainroad').value,
+                guestroom: document.getElementById('guestroom').value,
+                basement: document.getElementById('basement').value,
+                hotwaterheating: document.getElementById('hotwaterheating').value,
+                airconditioning: document.getElementById('airconditioning').value,
+                parking: parseInt(document.getElementById('parking').value),
+                prefarea: document.getElementById('prefarea').value,
+                furnishingstatus: document.getElementById('furnishingstatus').value
+            };
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('predictionResult').innerText = `Predicted Price: ₹${data.predicted_price}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('predictionResult').innerText = 'Error making prediction';
+            });
+        });
+    </script>
+</body>
+</html>
